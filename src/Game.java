@@ -150,139 +150,289 @@ public class Game {
         }
     }
 
-        public int utilidade(){
-            int utilidade=0;
+    public int utilidade(){
 
-            int xxx=0;
-            int xx=0;
-            int x=0;
-            int oo=0;
-            int ooo=0;
-            int o=0;
-            for(int i=0; i<6; i++){
-                for(int j=0; j<7; j++){
-                    if(board[i][j]=='X' && board[i][j]=='X'){
+        int utilidade=0;
+        int o = 0,oo = 0,ooo = 0, x = 0, xx= 0, xxx= 0;
+        if(vitoria('X')){
+            return 512;
+        }
+        if(vitoria('O')){
+            return -512;
+        }
+        int count=0;
+        for(int i=0; i<6; i++){
+            for(int j=0; j<4; j++){                     //horizontal
+                if(board[i][j]!='O' && board[i][j+1]!='O' && board[i][j+2]!='O' && board[i][j+3]!='O'){
+                    if(board[i][j]=='X'){
+                        count++;
+                    }
+                    if(board[i][j+1]=='X'){
+                        count++;
+                    }
+                    if(board[i][j+2]=='X'){
+                        count++;
+                    }
+                    if(board[i][j+3]=='X'){
+                        count++;
+                    }
+
+
+                    if(count==1){
                         utilidade+=1;
-                        x++;                                  //numero de x
+                        x++;
                     }
-
-                    if(j<6){
-                        if(board[i][j]=='X' && board[i][j+1]=='X'){
-                            utilidade+=10;
-                            xx++;
-                        }                                                           //numero de sequencias de 2 e 3 X na horizontal
+                    else if(count==2){
+                        utilidade+=10;
+                        xx++;
                     }
-                    if(j<5){
-                        if(board[i][j]=='X' && board[i][j+1]=='X' && board[i][j+2]=='X'){
-                            utilidade+=50;
-                            xxx++;
-                        }
-                    }
-
-                    if(i<5){
-                        if(board[i][j]=='X' && board[i+1][j]=='X'){
-                            utilidade+=10;
-                            xx++;
-                        }                                                              //numero de sequencias de 2 e 3 X na vertical
-                    }
-                    if(i<4){
-                        if(board[i][j]=='X' && board[i+1][j]=='X' && board[i+2][j]=='X'){
-                            utilidade+=50;
-                            xxx++;
-                        }
-                    }
-
-                    if(i<5 && j<6){
-                        if(board[i][j]=='X' && board[i+1][j+1]=='X'){
-                            utilidade+=10;
-                            xx++;
-                        }
-                    }
-                    if(i<4 && j<5){
-                        if(board[i][j]=='X' && board[i+1][j+1]=='X' && board[i+2][j+2]=='X'){
-                            utilidade+=50;
-                            xxx++;
-                        }
-                    }
-
-                    if(i<5 && j>0){
-                        if(board[i][j]=='X' && board[i+1][j-1]=='X'){
-                            utilidade+=10;
-                            xx++;
-                        }
-                    }
-                    if(i<4 && j>1){
-                        if(board[i][j]=='X' && board[i+1][j-1]=='X' && board[i+2][j-2]=='X'){
-                            utilidade+=50;
-                            xxx++;
-                        }
-                    }
-
-
-
-
-
-
-                    if(board[i][j]=='O' && board[i][j]=='O'){
-                        utilidade-=1;
-                        o++;                                 //numero de O
-                    }
-
-                    if(j<6){
-                        if(board[i][j]=='O' && board[i][j+1]=='O'){
-                            utilidade-=10;
-                            oo++;
-                        }                                                           //numero de sequencias de 2 e 3 O na horizontal
-                    }
-                    if(j<5){
-                        if(board[i][j]=='O' && board[i][j+1]=='O' && board[i][j+2]=='O'){
-                            utilidade-=50;
-                            ooo++;
-                        }
-                    }
-
-                    if(i<5){
-                        if(board[i][j]=='O' && board[i+1][j]=='O'){
-                            utilidade-=10;
-                            oo++;
-                        }                                                              //numero de sequencias de 2 e 3 O na vertical
-                    }
-                    if(i<4){
-                        if(board[i][j]=='O' && board[i+1][j]=='O' && board[i+2][j]=='O'){
-                            utilidade-=50;
-                            ooo++;
-                        }
-                    }
-
-                    if(i<5 && j<6){
-                        if(board[i][j]=='O' && board[i+1][j+1]=='O'){
-                            utilidade-=10;
-                            oo++;
-                        }
-                    }
-                    if(i<4 && j<5){
-                        if(board[i][j]=='O' && board[i+1][j+1]=='O' && board[i+2][j+2]=='O'){
-                            utilidade-=50;
-                            ooo++;
-                        }
-                    }
-
-                    if(i<5 && j>0){
-                        if(board[i][j]=='O' && board[i+1][j-1]=='O'){
-                            utilidade-=10;
-                            oo++;
-                        }
-                    }
-                    if(i<4 && j>1){
-                        if(board[i][j]=='O' && board[i+1][j-1]=='O' && board[i+2][j-2]=='O'){
-                            utilidade-=50;
-                            ooo++;
-                        }
+                    else if(count==3){
+                        utilidade+=50;
+                        xxx++;
                     }
                 }
+                count=0;
+
             }
-            return utilidade;
         }
+
+        for(int i=0; i<3; i++){
+            for(int j=0; j<7; j++){                     //vertical
+                if(board[i][j]!='O' && board[i+1][j]!='O' && board[i+2][j]!='O' && board[i+3][j]!='O'){
+                    if(board[i][j]=='X'){
+                        count++;
+                    }
+                    if(board[i+1][j]=='X'){
+                        count++;
+                    }
+                    if(board[i+2][j]=='X'){
+                        count++;
+                    }
+                    if(board[i+3][j]=='X'){
+                        count++;
+                    }
+
+
+                    if(count==1){
+                        utilidade+=1;
+                        x++;
+                    }
+                    else if(count==2){
+                        utilidade+=10;
+                        xx++;
+                    }
+                    else if(count==3){
+                        utilidade+=50;
+                        xxx++;
+                    }
+                }
+                count=0;
+            }
+        }
+
+        for(int i=0; i<3; i++){
+            for(int j=0; j<4; j++){                     //diagonal1
+                if(board[i][j]!='O' && board[i+1][j+1]!='O' && board[i+2][j+2]!='O' && board[i+3][j+3]!='O'){
+                    if(board[i][j]=='X'){
+                        count++;
+                    }
+                    if(board[i+1][j+1]=='X'){
+                        count++;
+                    }
+                    if(board[i+2][j+2]=='X'){
+                        count++;
+                    }
+                    if(board[i+3][j+3]=='X'){
+                        count++;
+                    }
+
+
+                    if(count==1){
+                        utilidade+=1;
+                        x++;
+                    }
+                    else if(count==2){
+                        utilidade+=10;
+                        xx++;
+                    }
+                    else if(count==3){
+                        utilidade+=50;
+                        xxx++;
+                    }
+                }
+                count=0;
+            }
+        }
+
+
+        for(int i=3; i<6; i++){
+            for(int j=0; j<4; j++){                     //diagonal2
+                if(board[i][j]!='O' && board[i-1][j+1]!='O' && board[i-2][j+2]!='O' && board[i-3][j+3]!='O'){
+                    if(board[i][j]=='X'){
+                        count++;
+                    }
+                    if(board[i-1][j+1]=='X'){
+                        count++;
+                    }
+                    if(board[i-2][j+2]=='X'){
+                        count++;
+                    }
+                    if(board[i-3][j+3]=='X'){
+                        count++;
+                    }
+
+
+                    if(count==1){
+                        utilidade+=1;
+                        x++;
+                    }
+                    else if(count==2){
+                        utilidade+=10;
+                        xx++;
+                    }
+                    else if(count==3){
+                        utilidade+=50;
+                        xxx++;
+                    }
+                }
+                count=0;
+            }
+        }
+
+
+
+        for(int i=0; i<6; i++){
+            for(int j=0; j<4; j++){                     //horizontal
+                if(board[i][j]!='X' && board[i][j+1]!='X' && board[i][j+2]!='X' && board[i][j+3]!='X'){
+                    if(board[i][j]=='O'){
+                        count++;
+                    }
+                    if(board[i][j+1]=='O'){
+                        count++;
+                    }
+                    if(board[i][j+2]=='O'){
+                        count++;
+                    }
+                    if(board[i][j+3]=='O'){
+                        count++;
+                    }
+
+
+                    if(count==1){
+                        utilidade-=1;
+                    }
+                    else if(count==2){
+                        utilidade-=10;
+                    }
+                    else if(count==3){
+                        utilidade-=50;
+                    }
+                }
+                count=0;
+
+            }
+        }
+
+
+
+        for(int i=0; i<3; i++){
+            for(int j=0; j<7; j++){                     //vertical
+                if(board[i][j]!='X' && board[i+1][j]!='X' && board[i+2][j]!='X' && board[i+3][j]!='X'){
+                    if(board[i][j]=='O'){
+                        count++;
+                    }
+                    if(board[i+1][j]=='O'){
+                        count++;
+                    }
+                    if(board[i+2][j]=='O'){
+                        count++;
+                    }
+                    if(board[i+3][j]=='O'){
+                        count++;
+                    }
+
+
+                    if(count==1){
+                        utilidade-=1;
+                    }
+                    else if(count==2){
+                        utilidade-=10;
+                    }
+                    else if(count==3){
+                        utilidade-=50;
+                    }
+                }
+                count=0;
+            }
+        }
+
+
+
+        for(int i=0; i<3; i++){
+            for(int j=0; j<4; j++){                     //diagonal1
+                if(board[i][j]!='X' && board[i+1][j+1]!='X' && board[i+2][j+2]!='X' && board[i+3][j+3]!='X'){
+                    if(board[i][j]=='O'){
+                        count++;
+                    }
+                    if(board[i+1][j+1]=='O'){
+                        count++;
+                    }
+                    if(board[i+2][j+2]=='O'){
+                        count++;
+                    }
+                    if(board[i+3][j+3]=='O'){
+                        count++;
+                    }
+
+
+                    if(count==1){
+                        utilidade-=1;
+                    }
+                    else if(count==2){
+                        utilidade-=10;
+                    }
+                    else if(count==3){
+                        utilidade-=50;
+                    }
+                }
+                count=0;
+            }
+        }
+
+
+        for(int i=3; i<6; i++){
+            for(int j=0; j<4; j++){                     //diagonal2
+                if(board[i][j]!='X' && board[i-1][j+1]!='X' && board[i-2][j+2]!='X' && board[i-3][j+3]!='X'){
+                    if(board[i][j]=='O'){
+                        count++;
+                    }
+                    if(board[i-1][j+1]=='O'){
+                        count++;
+                    }
+                    if(board[i-2][j+2]=='O'){
+                        count++;
+                    }
+                    if(board[i-3][j+3]=='O'){
+                        count++;
+                    }
+
+
+                    if(count==1){
+                        utilidade-=1;
+                    }
+                    else if(count==2){
+                        utilidade-=10;
+                    }
+                    else if(count==3){
+                        utilidade-=50;
+                    }
+                }
+                count=0;
+            }
+        }
+        return utilidade;
+    }
+
 
 
 /*

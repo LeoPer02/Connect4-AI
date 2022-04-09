@@ -1,3 +1,5 @@
+import java.util.Random;
+
 public class MinMax {
     int depth;
     int best = 0;
@@ -9,15 +11,28 @@ public class MinMax {
     public int max(int[] a){
         int val = -999999;
         int j = 0;
+        int count = 0;
         for(int i = 1; i < a.length; i++){
             System.out.print(a[i] + " ");
-            if(a[i] >= val){
+            if(a[i] > val){
                 val = a[i];
                 j = i;
+                count = 1;
+            }else if(a[i] == val){
+                count++;
             }
         }
         System.out.println();
-        return j;
+        int[] maxs = new int[count];
+        Random r = new Random();
+        int k = 0;
+        for(int i = 0; i < a.length; i++){
+            if(a[i] == val) {
+                maxs[k] = i;
+                k++;
+            }
+            }
+        return maxs[r.nextInt(count)];
     }
     public int gerar(Game atual){
         //Teste
@@ -48,10 +63,10 @@ public class MinMax {
             for(int i = 1; i < 8; i++){
                 boolean[] poss = atual.movimentosPossiveis();
                 if(poss[i]) {
-                    k = MIN_VALUE(atual.sucessor('X', i), depth-1);
-                    if(k >= v){
+                    k = MIN_VALUE(atual.sucessor('O', i), depth-1);
+                    if(k > v){
                         v = k;
-                            best = i;
+                        best = i;
                     }
                 }
             }
