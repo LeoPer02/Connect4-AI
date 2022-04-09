@@ -34,24 +34,59 @@ public class MinMax {
             }
         return maxs[r.nextInt(count)];
     }
-    public int gerar(Game atual){
-        //Teste
-        boolean[] poss = atual.movimentosPossiveis();
-        int[] vals = new int[poss.length];
-        for(int i = 1; i < poss.length; i++){
-            if(poss[i]){
-                vals[i] = MIN_VALUE(atual.sucessor('X', i), depth-1);
-            }else{
-                vals[i] = -99999999;
+    public int min(int[] a){
+        int val = 99999;
+        int j = 0;
+        int count = 0;
+        for(int i = 1; i < a.length; i++){
+            System.out.print(a[i] + " ");
+            if(a[i] < val){
+                val = a[i];
+                j = i;
+                count = 1;
+            }else if(a[i] == val){
+                count++;
             }
         }
-        return max(vals);
+        System.out.println();
+        int[] mins = new int[count];
+        Random r = new Random();
+        int k = 0;
+        for(int i = 0; i < a.length; i++){
+            if(a[i] == val) {
+                mins[k] = i;
+                k++;
+            }
+        }
+        return mins[r.nextInt(count)];
+    }
 
-        /*
-        int z = MAX_VALUE(atual, depth);
-        System.out.println("Melhor = " + z);
-        return this.best;
-        */
+    public int gerar(Game atual, int ordem){
+        //Teste
+        if(ordem == 1) {
+            boolean[] poss = atual.movimentosPossiveis();
+            int[] vals = new int[poss.length];
+            for (int i = 1; i < poss.length; i++) {
+                if (poss[i]) {
+                    vals[i] = MIN_VALUE(atual.sucessor('X', i), depth - 1);
+                } else {
+                    vals[i] = -99999999;
+                }
+            }
+            return max(vals);
+        }else{
+            boolean[] poss = atual.movimentosPossiveis();
+            int[] vals = new int[poss.length];
+            for (int i = 1; i < poss.length; i++) {
+                if (poss[i]) {
+                    vals[i] = MAX_VALUE(atual.sucessor('O', i), depth - 1);
+                } else {
+                    vals[i] = 99999999;
+                }
+            }
+            return min(vals);
+        }
+
     }
 
     public int MAX_VALUE(Game atual, int depth){
@@ -63,7 +98,7 @@ public class MinMax {
             for(int i = 1; i < 8; i++){
                 boolean[] poss = atual.movimentosPossiveis();
                 if(poss[i]) {
-                    k = MIN_VALUE(atual.sucessor('O', i), depth-1);
+                    k = MIN_VALUE(atual.sucessor('O', i), depth-1) ;
                     if(k > v){
                         v = k;
                         best = i;
@@ -82,7 +117,7 @@ public class MinMax {
             for(int i = 1; i < 8; i++){
                 boolean[] poss = atual.movimentosPossiveis();
                 if(poss[i]) {
-                    k = MAX_VALUE(atual.sucessor('X', i), depth-1);
+                    k = MAX_VALUE(atual.sucessor('X', i), depth-1) ;
                     if(k <= v){
                         v = k;
                     }

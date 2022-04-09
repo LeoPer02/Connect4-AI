@@ -16,7 +16,7 @@ public class main {
             if(ordem == 2) {
                 while (jogada < 42) {
                     //Computador primeiro
-                    int movimento = jogo.gerar(a);
+                    int movimento = jogo.gerar(a,1);
                     System.out.println("Movimento: " + movimento);
                     a = a.sucessor('X', movimento);
                     jogada++;
@@ -41,9 +41,9 @@ public class main {
                     return;
                 }
             }else{
+                a.printJogo();
                 while (jogada < 42) {
                     //Player primeiro
-                    a.printJogo();
                     int playerMov = in.nextInt();
                     a = a.sucessor('O', playerMov);
                     jogada++;
@@ -53,7 +53,7 @@ public class main {
                         System.out.println("O ganhou a partida!!");
                         break;
                     }
-                    int movimento = jogo.gerar(a);
+                    int movimento = jogo.gerar(a,2);
                     System.out.println("Movimento: " + movimento);
                     a = a.sucessor('X', movimento);
                     jogada++;
