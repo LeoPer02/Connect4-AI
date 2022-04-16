@@ -1,4 +1,6 @@
+import java.util.ArrayList;
 import java.util.Random;
+
 
 public class MinMax {
     int depth;
@@ -64,7 +66,7 @@ public class MinMax {
     public int gerar(Game atual, int ordem){
         //Teste
         if(ordem == 1) {
-            boolean[] poss = atual.movimentosPossiveis();
+            ArrayList<Integer> poss = atual.movimentosPossiveis();
             int[] vals = new int[poss.length];
             for (int i = 1; i < poss.length; i++) {
                 if (poss[i]) {
