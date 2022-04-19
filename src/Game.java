@@ -224,10 +224,12 @@ public class Game {
         }
 
         // Not a end game
+
         int sum = 0;
+        /*
         if (turno == 'X') sum += 16;
         else sum -= 16;
-
+        */
         // Vertical eval
         for (int row = 0; row < 4; row++) {
             for (int col = 0; col < 7; col++) {

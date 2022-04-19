@@ -9,7 +9,7 @@ public class main {
         int alg = in.nextInt();
         switch (alg) {
             case 1:
-                //runMinMax();
+                runMinMax();
                 break;
             case 3:
                 runMonteCarlo();
@@ -71,7 +71,6 @@ public class main {
 
     }
 
-    /*
     private static void runMinMax() {
         Game a = new Game();
         Scanner in = new Scanner(System.in);
@@ -83,16 +82,17 @@ public class main {
         System.out.println("Deseja jogar primeiro ou segundo? (1/2)");
         int ordem = in.nextInt();
         if (ordem == 2) {
+            char jogador = 'O', oponente = 'X';
             while (jogada < 42) {
                 //Computador primeiro
-                int movimento = jogo.gerar(a, 1);
+                int movimento = jogo.gerar(a, 'X');
                 System.out.println("Movimento: " + movimento);
                 a = a.sucessor(movimento);
                 jogada++;
                 a.printJogo();
                 System.out.println();
-                if (a.vitoria('X')) {
-                    System.out.println("X ganhou a partida!!");
+                if (a.vitoria(oponente)) {
+                    System.out.println(oponente + " ganhou a partida!!");
                     break;
                 }
                 int playerMov = in.nextInt();
@@ -100,8 +100,8 @@ public class main {
                 jogada++;
                 a.printJogo();
                 System.out.println();
-                if (a.vitoria('O')) {
-                    System.out.println("O ganhou a partida!!");
+                if (a.vitoria(jogador)) {
+                    System.out.println(jogador + " ganhou a partida!!");
                     break;
                 }
             }
@@ -110,6 +110,7 @@ public class main {
                 return;
             }
         } else {
+            char jogador = 'X', oponente = 'O';
             a.printJogo();
             while (jogada < 42) {
                 //Player primeiro
@@ -118,18 +119,18 @@ public class main {
                 jogada++;
                 a.printJogo();
                 System.out.println();
-                if (a.vitoria('O')) {
-                    System.out.println("O ganhou a partida!!");
+                if (a.vitoria(jogador)) {
+                    System.out.println(jogador + " ganhou a partida!!");
                     break;
                 }
-                int movimento = jogo.gerar(a, 2);
-                System.out.println("Movimento: " + movimento);
+                int movimento = jogo.gerar(a, 'O');
+                System.out.println("Min-Max jogou: " + movimento);
                 a = a.sucessor(movimento);
                 jogada++;
                 a.printJogo();
                 System.out.println();
-                if (a.vitoria('X')) {
-                    System.out.println("X ganhou a partida!!");
+                if (a.vitoria('0')) {
+                    System.out.println(oponente + " ganhou a partida");
                     break;
                 }
             }
@@ -139,5 +140,4 @@ public class main {
             }
         }
     }
-    */
 }
