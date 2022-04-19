@@ -18,7 +18,7 @@ public class main {
     }
 
     private static void runMonteCarlo() {
-        MCTSGame a = new MCTSGame();
+        Game a = new Game();
         Scanner in = new Scanner(System.in);
 
         System.out.println("Introduza a profundidade do algoritmo:");
@@ -36,7 +36,7 @@ public class main {
             oponente = 'X';
         }
 
-        MCTS mcts = new MCTS(oponente, 1, depth);
+        MCTS mcts = new MCTS(oponente, 1.3, depth);
         int aux = 0;
         if (jogador == 'X') {
             int playerMov = in.nextInt();
@@ -48,19 +48,22 @@ public class main {
         while (jogadas < 42 - aux) {
             a = mcts.findNextMove(a);
             jogadas++;
+            System.out.println("\n------------------------------------------\nMCTS:\n");
             a.printJogo();
             System.out.println();
-            if (a.vitoria('X')) {
-                System.out.println("X ganhou a partida!!");
+            if (Math.abs(a.utilidade()) == 512) {
+                System.out.println(oponente + " ganhou a partida!!");
                 break;
             }
+
             int playerMov = in.nextInt();
             a = a.sucessor(playerMov);
             jogadas++;
+            System.out.println("\n-------------------------\nYou:\n");
             a.printJogo();
             System.out.println();
-            if (a.vitoria('O')) {
-                System.out.println("O ganhou a partida!!");
+            if (Math.abs(a.utilidade()) == 512) {
+                System.out.println(jogador + " ganhou a partida!!");
                 break;
             }
         }

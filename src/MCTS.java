@@ -3,14 +3,14 @@ import java.util.ArrayList;
 public class MCTS {
 
     private static class Node {
-        private MCTSGame game;
+        private Game game;
         private Node parent;
         private ArrayList<Node> children;
 
         private int visitCount;
         private int score;
 
-        public Node(MCTSGame game, Node parent) {
+        public Node(Game game, Node parent) {
             this.game = game;
             this.parent = parent;
             this.children = new ArrayList<>();
@@ -19,7 +19,7 @@ public class MCTS {
             this.score = 0;
         }
 
-        public Node(MCTSGame game) {
+        public Node(Game game) {
             this.game = game;
             this.parent = null;
             this.children = new ArrayList<>();
@@ -29,10 +29,10 @@ public class MCTS {
         }
 
         public boolean isLeaf() {
-            return children.size() == 0;
+            return children.size() == 0 || game.isBoardFull();
         }
 
-        public MCTSGame getGame() {
+        public Game getGame() {
             return game;
         }
 
@@ -57,8 +57,12 @@ public class MCTS {
         }
 
         public void expandNode() {
-            for (MCTSGame c: game.getChildren()) {
-                children.add(new Node(c));
+            ArrayList<Game> childGames = game.getChildren();
+            if (childGames.size() == 0) {
+                System.out.println("eita");
+            }
+            for (Game c: childGames) {
+                children.add(new Node(c, this));
             }
         }
 
@@ -80,7 +84,7 @@ public class MCTS {
                     return children.get(i);
                 } else if (tmpUcb > highestUcb) {
                     selected = children.get(i);
-                    highestUcb = selected.getUCB();
+                    highestUcb = tmpUcb;
                 }
             }
             return selected;
@@ -91,18 +95,15 @@ public class MCTS {
         }
 
     }
-
-    private char player;
     private int playerMultiplier;
-    private long timeLimit;
+    private double timeLimit;
     private int rolloutLimit;
 
-    public MCTS(char player, long timeLimitInSecs, int rolloutLimit) {
-        this.player = player;
+    public MCTS(char aiMarker, double timeLimitInSecs, int rolloutLimit) {
         this.timeLimit = timeLimitInSecs * 1000;
         this.rolloutLimit = rolloutLimit;
 
-        if (player == 'X') {
+        if (aiMarker == 'X') {
             playerMultiplier = 1;
         } else {
             playerMultiplier = -1;
@@ -110,24 +111,30 @@ public class MCTS {
     }
 
     public Game findNextMove(Game rootGame) {
-        Node root = new Node((MCTSGame) rootGame);
+        Node root = new Node(rootGame);
         root.expandNode();
 
-        Node current = selection(root);
+        Node current;
         int rolloutValue;
         long startTime = System.currentTimeMillis();
         while (System.currentTimeMillis() - startTime < timeLimit) {
-            if (current.getVisitCount() != 0) {
+            current = root;
+
+            // left part
+            while (!current.isLeaf()) {
+                current = current.getChildMaxUCB();
+            }
+
+            // right part
+            if (current.getVisitCount() != 0 && current.game.isInProgress()) {
                 current.expandNode();
                 current = current.getFirstChild();
             }
             rolloutValue = rollout(current);
             backpropagate(current, rolloutValue);
-
-            current = selection(root);
         }
 
-        return current.getChildMaxUCB().getGame();
+        return root.getChildMaxUCB().getGame();
     }
 
     private Node selection(Node node) {
@@ -138,7 +145,7 @@ public class MCTS {
     }
 
     private int rollout(Node node) {
-        MCTSGame game = node.getGame();
+        Game game = node.getGame();
         for (int i = 0; i < rolloutLimit; i++) {
             if (!game.isInProgress()) {
                 return game.utilidade() * playerMultiplier;
