@@ -3,9 +3,10 @@ import java.util.ArrayList;
 public class MCTS {
 
     private static class Node {
-        private Game game;
-        private Node parent;
-        private ArrayList<Node> children;
+        private final float MAX_UCB = 999999999;
+        private final Game game;
+        private final Node parent;
+        private final ArrayList<Node> children;
 
         private int visitCount;
         private int score;
@@ -67,7 +68,8 @@ public class MCTS {
         }
 
         private float getUCB() {
-            if (visitCount == 0) return Float.POSITIVE_INFINITY;
+            if (visitCount == 0) return MAX_UCB;
+            assert parent != null;
             return (float) ((score/visitCount) + 2 * Math.sqrt(Math.log(parent.getVisitCount()) / visitCount));
         }
 
@@ -80,7 +82,7 @@ public class MCTS {
             float tmpUcb, highestUcb = selected.getUCB();
             for (int i = 1; i < children.size(); i++) {
                 tmpUcb = children.get(i).getUCB();
-                if (tmpUcb == Float.POSITIVE_INFINITY) {
+                if (tmpUcb == MAX_UCB) {
                     return children.get(i);
                 } else if (tmpUcb > highestUcb) {
                     selected = children.get(i);
@@ -95,9 +97,9 @@ public class MCTS {
         }
 
     }
-    private int playerMultiplier;
-    private double timeLimit;
-    private int rolloutLimit;
+    private final int playerMultiplier;
+    private final double timeLimit;
+    private final int rolloutLimit;
 
     public MCTS(char aiMarker, double timeLimitInSecs, int rolloutLimit) {
         this.timeLimit = timeLimitInSecs * 1000;
@@ -131,17 +133,10 @@ public class MCTS {
                 current = current.getFirstChild();
             }
             rolloutValue = rollout(current);
-            backpropagate(current, rolloutValue);
+            backpropagation(current, rolloutValue);
         }
 
         return root.getChildMaxUCB().getGame();
-    }
-
-    private Node selection(Node node) {
-        while (!node.isLeaf()) {
-            node = node.getChildMaxUCB();
-        }
-        return node;
     }
 
     private int rollout(Node node) {
@@ -155,7 +150,7 @@ public class MCTS {
         return game.utilidade() * playerMultiplier;
     }
 
-    private void backpropagate(Node node, int rolloutValue) {
+    private void backpropagation(Node node, int rolloutValue) {
         while (node != null) {
             node.addToScore(rolloutValue);
             node.incrementVisitCount();

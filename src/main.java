@@ -36,8 +36,9 @@ public class main {
             oponente = 'X';
         }
 
-        MCTS mcts = new MCTS(oponente, 1.3, depth);
+        MCTS mcts = new MCTS(oponente, 1, depth);
         int aux = 0;
+        a.printJogo();
         if (jogador == 'X') {
             int playerMov = in.nextInt();
             a = a.sucessor(playerMov);

@@ -1,0 +1,3 @@
+1 - em vez de pegar o nó com max ucb, fazer alguma aleatóriedade
+2 - rollout até nó terminal
+3 - checar por vitória nos primeiros filhos do root
