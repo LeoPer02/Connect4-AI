@@ -21,8 +21,6 @@ public class main {
         Game a = new Game();
         Scanner in = new Scanner(System.in);
 
-        System.out.println("Introduza a profundidade do algoritmo:");
-        int depth = in.nextInt();
         int jogadas = 0;
         System.out.println("Deseja jogar primeiro ou segundo? (1/2)");
         int ordem = in.nextInt();
@@ -36,7 +34,9 @@ public class main {
             oponente = 'X';
         }
 
-        MCTS mcts = new MCTS(oponente, 1, depth);
+
+        MCTS mcts_jogador = new MCTS(jogador, 1);
+        MCTS mcts = new MCTS(oponente, 1);
         int aux = 0;
         a.printJogo();
         if (jogador == 'X') {
@@ -59,6 +59,7 @@ public class main {
 
             int playerMov = in.nextInt();
             a = a.sucessor(playerMov);
+            a = mcts_jogador.findNextMove(a);
             jogadas++;
             System.out.println("\n-------------------------\nYou:\n");
             a.printJogo();
@@ -71,10 +72,10 @@ public class main {
 
     }
 
+
     private static void runMinMax() {
         Game a = new Game();
         Scanner in = new Scanner(System.in);
-
         System.out.println("Introduza a profundidade do algoritmo:");
         int depth = in.nextInt();
         MinMax jogo = new MinMax(depth);
@@ -82,7 +83,6 @@ public class main {
         System.out.println("Deseja jogar primeiro ou segundo? (1/2)");
         int ordem = in.nextInt();
         if (ordem == 2) {
-            char jogador = 'O', oponente = 'X';
             while (jogada < 42) {
                 //Computador primeiro
                 int movimento = jogo.gerar(a, 'X');
@@ -91,22 +91,22 @@ public class main {
                 jogada++;
                 a.printJogo();
                 System.out.println();
-                if (a.vitoria(oponente)) {
-                    System.out.println(oponente + " ganhou a partida!!");
+                if (a.vitoria('X')) {
+                    System.out.println("X ganhou a partida!!");
                     break;
                 }
                 int playerMov = in.nextInt();
                 while(playerMov < 0 || playerMov > 6){
-                    System.out.println("Introduza uma opção válida");
+                    System.out.println("Movimento impossivel\nIntroduza uma jogada possivel");
                     a.printJogo();
-                    playerMov = in.nextInt();
                 }
                 a = a.sucessor(playerMov);
                 jogada++;
                 a.printJogo();
                 System.out.println();
-                if (a.vitoria(jogador)) {
-                    System.out.println(jogador + " ganhou a partida!!");
+                System.out.println(a.vitoria('O'));
+                if (a.vitoria('O')) {
+                    System.out.println("O ganhou a partida!!");
                     break;
                 }
             }
@@ -115,32 +115,31 @@ public class main {
                 return;
             }
         } else {
-            char jogador = 'X', oponente = 'O';
             a.printJogo();
             while (jogada < 42) {
                 //Player primeiro
                 int playerMov = in.nextInt();
                 while(playerMov < 0 || playerMov > 6){
-                    System.out.println("Introduza uma opção válida");
+                    System.out.println("Movimento impossivel\nIntroduza uma jogada possivel");
                     a.printJogo();
-                    playerMov = in.nextInt();
                 }
                 a = a.sucessor(playerMov);
                 jogada++;
                 a.printJogo();
                 System.out.println();
-                if (a.vitoria(jogador)) {
-                    System.out.println(jogador + " ganhou a partida!!");
+                if (a.vitoria('O')) {
+                    System.out.println("O ganhou a partida!!");
                     break;
                 }
+                a.turno = 'O';
                 int movimento = jogo.gerar(a, 'O');
-                System.out.println("Min-Max jogou: " + movimento);
+                System.out.println("Movimento: " + movimento);
                 a = a.sucessor(movimento);
                 jogada++;
                 a.printJogo();
                 System.out.println();
-                if (a.vitoria('0')) {
-                    System.out.println(oponente + " ganhou a partida");
+                if (a.vitoria('X')) {
+                    System.out.println("X ganhou a partida!!");
                     break;
                 }
             }

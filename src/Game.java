@@ -1,12 +1,15 @@
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Game {
+    Random rand;
     char[][] board;
     char turno;
 
     public Game(char[][] board, char turno) {
         this.board = board;
         this.turno = turno;
+        this.rand = new Random();
     }
 
     public Game() {
@@ -224,12 +227,8 @@ public class Game {
         }
 
         // Not a end game
-
         int sum = 0;
-        /*
-        if (turno == 'X') sum += 16;
-        else sum -= 16;
-        */
+
         // Vertical eval
         for (int row = 0; row < 4; row++) {
             for (int col = 0; col < 7; col++) {
@@ -356,7 +355,6 @@ public class Game {
         if (isBoardFull()) {
             return 0;
         }
-
         int utilidade = 0;
         int o = 0, oo = 0, ooo = 0, x = 0, xx = 0, xxx = 0;
         if (vitoria('X')) {
@@ -381,8 +379,6 @@ public class Game {
                     if (board[i][j + 3] == 'X') {
                         count++;
                     }
-
-
                     if (count == 1) {
                         utilidade += 1;
                         x++;
@@ -395,10 +391,8 @@ public class Game {
                     }
                 }
                 count = 0;
-
             }
         }
-
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 7; j++) {                     //vertical
                 if (board[i][j] != 'O' && board[i + 1][j] != 'O' && board[i + 2][j] != 'O' && board[i + 3][j] != 'O') {
@@ -414,8 +408,6 @@ public class Game {
                     if (board[i + 3][j] == 'X') {
                         count++;
                     }
-
-
                     if (count == 1) {
                         utilidade += 1;
                         x++;
@@ -430,7 +422,6 @@ public class Game {
                 count = 0;
             }
         }
-
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 4; j++) {                     //diagonal1
                 if (board[i][j] != 'O' && board[i + 1][j + 1] != 'O' && board[i + 2][j + 2] != 'O' && board[i + 3][j + 3] != 'O') {
@@ -446,8 +437,6 @@ public class Game {
                     if (board[i + 3][j + 3] == 'X') {
                         count++;
                     }
-
-
                     if (count == 1) {
                         utilidade += 1;
                         x++;
@@ -462,8 +451,6 @@ public class Game {
                 count = 0;
             }
         }
-
-
         for (int i = 3; i < 6; i++) {
             for (int j = 0; j < 4; j++) {                     //diagonal2
                 if (board[i][j] != 'O' && board[i - 1][j + 1] != 'O' && board[i - 2][j + 2] != 'O' && board[i - 3][j + 3] != 'O') {
@@ -479,8 +466,6 @@ public class Game {
                     if (board[i - 3][j + 3] == 'X') {
                         count++;
                     }
-
-
                     if (count == 1) {
                         utilidade += 1;
                         x++;
@@ -495,8 +480,6 @@ public class Game {
                 count = 0;
             }
         }
-
-
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 4; j++) {                     //horizontal
                 if (board[i][j] != 'X' && board[i][j + 1] != 'X' && board[i][j + 2] != 'X' && board[i][j + 3] != 'X') {
@@ -512,8 +495,6 @@ public class Game {
                     if (board[i][j + 3] == 'O') {
                         count++;
                     }
-
-
                     if (count == 1) {
                         utilidade -= 1;
                     } else if (count == 2) {
@@ -523,11 +504,8 @@ public class Game {
                     }
                 }
                 count = 0;
-
             }
         }
-
-
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 7; j++) {                     //vertical
                 if (board[i][j] != 'X' && board[i + 1][j] != 'X' && board[i + 2][j] != 'X' && board[i + 3][j] != 'X') {
@@ -543,8 +521,6 @@ public class Game {
                     if (board[i + 3][j] == 'O') {
                         count++;
                     }
-
-
                     if (count == 1) {
                         utilidade -= 1;
                     } else if (count == 2) {
@@ -556,8 +532,6 @@ public class Game {
                 count = 0;
             }
         }
-
-
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 4; j++) {                     //diagonal1
                 if (board[i][j] != 'X' && board[i + 1][j + 1] != 'X' && board[i + 2][j + 2] != 'X' && board[i + 3][j + 3] != 'X') {
@@ -573,8 +547,6 @@ public class Game {
                     if (board[i + 3][j + 3] == 'O') {
                         count++;
                     }
-
-
                     if (count == 1) {
                         utilidade -= 1;
                     } else if (count == 2) {
@@ -586,8 +558,6 @@ public class Game {
                 count = 0;
             }
         }
-
-
         for (int i = 3; i < 6; i++) {
             for (int j = 0; j < 4; j++) {                     //diagonal2
                 if (board[i][j] != 'X' && board[i - 1][j + 1] != 'X' && board[i - 2][j + 2] != 'X' && board[i - 3][j + 3] != 'X') {
@@ -603,8 +573,6 @@ public class Game {
                     if (board[i - 3][j + 3] == 'O') {
                         count++;
                     }
-
-
                     if (count == 1) {
                         utilidade -= 1;
                     } else if (count == 2) {
@@ -618,7 +586,6 @@ public class Game {
         }
         return utilidade;
     }
-
      */
 
     public ArrayList<Game> getChildren() {
@@ -631,7 +598,7 @@ public class Game {
 
     public Game getRandomChild() {
         ArrayList<Integer> movimentosPossiveis = movimentosPossiveis();
-        int nextPlayCol = movimentosPossiveis.get((int) Math.round(Math.random() * (movimentosPossiveis.size() - 1)));
+        int nextPlayCol = movimentosPossiveis.get(rand.nextInt(movimentosPossiveis.size()));
         return sucessor(nextPlayCol);
     }
 
@@ -661,4 +628,3 @@ public class Game {
     }
     */
 }
-
