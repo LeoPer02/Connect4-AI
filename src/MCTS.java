@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Random;
 
 public class MCTS {
 
@@ -53,10 +54,6 @@ public class MCTS {
             score += value;
         }
 
-        public int getScore() {
-            return score;
-        }
-
         public void expandNode() {
             ArrayList<Game> childGames = game.getChildren();
             if (childGames.size() == 0) {
@@ -71,6 +68,31 @@ public class MCTS {
             if (visitCount == 0) return MAX_UCB;
             assert parent != null;
             return (float) ((score/visitCount) + 2 * Math.sqrt(Math.log(parent.getVisitCount()) / visitCount));
+        }
+
+        public Node getBestChildByUCB() {
+            Random rand = new Random();
+
+            if (children.size() == 0) System.out.println("Deu pau");
+
+            Node selected = children.get(0);
+            if (children.size() == 1) return selected;
+
+            if (rand.nextInt(100) < 15) {
+                return children.get(rand.nextInt(children.size()));
+            }
+
+            float tmpUcb, highestUcb = selected.getUCB();
+            for (int i = 1; i < children.size(); i++) {
+                tmpUcb = children.get(i).getUCB();
+                if (tmpUcb == MAX_UCB) {
+                    return children.get(i);
+                } else if (tmpUcb > highestUcb) {
+                    selected = children.get(i);
+                    highestUcb = tmpUcb;
+                }
+            }
+            return selected;
         }
 
         public Node getChildMaxUCB() {
@@ -99,11 +121,9 @@ public class MCTS {
     }
     private final int playerMultiplier;
     private final double timeLimit;
-    private final int rolloutLimit;
 
-    public MCTS(char aiMarker, double timeLimitInSecs, int rolloutLimit) {
+    public MCTS(char aiMarker, double timeLimitInSecs) {
         this.timeLimit = timeLimitInSecs * 1000;
-        this.rolloutLimit = rolloutLimit;
 
         if (aiMarker == 'X') {
             playerMultiplier = 1;
@@ -124,7 +144,7 @@ public class MCTS {
 
             // left part
             while (!current.isLeaf()) {
-                current = current.getChildMaxUCB();
+                current = current.getBestChildByUCB();
             }
 
             // right part
@@ -141,13 +161,14 @@ public class MCTS {
 
     private int rollout(Node node) {
         Game game = node.getGame();
-        for (int i = 0; i < rolloutLimit; i++) {
-            if (!game.isInProgress()) {
-                return game.utilidade() * playerMultiplier;
-            }
+        int tmpUtilidade = game.utilidade();
+
+        while (!game.isBoardFull() && Math.abs(tmpUtilidade) != 512) {
             game = game.getRandomChild();
+            tmpUtilidade = game.utilidade();
         }
-        return game.utilidade() * playerMultiplier;
+
+        return tmpUtilidade * playerMultiplier;
     }
 
     private void backpropagation(Node node, int rolloutValue) {

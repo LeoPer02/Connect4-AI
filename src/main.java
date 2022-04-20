@@ -21,8 +21,6 @@ public class main {
         Game a = new Game();
         Scanner in = new Scanner(System.in);
 
-        System.out.println("Introduza a profundidade do algoritmo:");
-        int depth = in.nextInt();
         int jogadas = 0;
         System.out.println("Deseja jogar primeiro ou segundo? (1/2)");
         int ordem = in.nextInt();
@@ -36,7 +34,9 @@ public class main {
             oponente = 'X';
         }
 
-        MCTS mcts = new MCTS(oponente, 1, depth);
+
+        MCTS mcts_jogador = new MCTS(jogador, 1);
+        MCTS mcts = new MCTS(oponente, 1);
         int aux = 0;
         a.printJogo();
         if (jogador == 'X') {
@@ -57,8 +57,9 @@ public class main {
                 break;
             }
 
-            int playerMov = in.nextInt();
-            a = a.sucessor(playerMov);
+            //int playerMov = in.nextInt();
+            //a = a.sucessor(playerMov);
+            a = mcts_jogador.findNextMove(a);
             jogadas++;
             System.out.println("\n-------------------------\nYou:\n");
             a.printJogo();

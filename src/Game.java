@@ -1,12 +1,15 @@
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Game {
+    Random rand;
     char[][] board;
     char turno;
 
     public Game(char[][] board, char turno) {
         this.board = board;
         this.turno = turno;
+        this.rand = new Random();
     }
 
     public Game() {
@@ -225,8 +228,6 @@ public class Game {
 
         // Not a end game
         int sum = 0;
-        if (turno == 'X') sum += 16;
-        else sum -= 16;
 
         // Vertical eval
         for (int row = 0; row < 4; row++) {
@@ -629,7 +630,7 @@ public class Game {
 
     public Game getRandomChild() {
         ArrayList<Integer> movimentosPossiveis = movimentosPossiveis();
-        int nextPlayCol = movimentosPossiveis.get((int) Math.round(Math.random() * (movimentosPossiveis.size() - 1)));
+        int nextPlayCol = movimentosPossiveis.get(rand.nextInt(movimentosPossiveis.size()));
         return sucessor(nextPlayCol);
     }
 
