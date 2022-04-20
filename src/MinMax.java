@@ -15,7 +15,6 @@ public class MinMax {
         int j = 0, i = 0;
         int count = 0;
         for(int move : a){
-            System.out.print(move + " ");
             if(move > val){
                 val = move;
                 j = i;
@@ -67,6 +66,7 @@ public class MinMax {
 
     public int gerar(Game atual, char ordem) {
         if(ordem == 'O') {
+            atual.turno = 'O';
             ArrayList<Integer> poss = atual.movimentosPossiveis();
             int[] vals = new int[7];
 
@@ -92,7 +92,7 @@ public class MinMax {
 
     public int MAX_VALUE(Game atual, int depth, int ordem){
         if(depth == 0){
-            return atual.utilidade() * ordem;
+            return (atual.utilidade() * ordem);
         }
         int v = -99999;
         int k;
@@ -109,7 +109,7 @@ public class MinMax {
 
     public int MIN_VALUE(Game atual, int depth, int ordem) {
         if (depth == 0) {
-            return atual.utilidade();
+            return atual.utilidade() * ordem;
         }
         int v = 999999;
         int k;

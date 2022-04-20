@@ -96,6 +96,11 @@ public class main {
                     break;
                 }
                 int playerMov = in.nextInt();
+                while(playerMov < 0 || playerMov > 6){
+                    System.out.println("Introduza uma opção válida");
+                    a.printJogo();
+                    playerMov = in.nextInt();
+                }
                 a = a.sucessor(playerMov);
                 jogada++;
                 a.printJogo();
@@ -115,6 +120,11 @@ public class main {
             while (jogada < 42) {
                 //Player primeiro
                 int playerMov = in.nextInt();
+                while(playerMov < 0 || playerMov > 6){
+                    System.out.println("Introduza uma opção válida");
+                    a.printJogo();
+                    playerMov = in.nextInt();
+                }
                 a = a.sucessor(playerMov);
                 jogada++;
                 a.printJogo();
