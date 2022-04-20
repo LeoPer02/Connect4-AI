@@ -104,7 +104,6 @@ public class main {
                 jogada++;
                 a.printJogo();
                 System.out.println();
-                System.out.println(a.vitoria('O'));
                 if (a.vitoria('O')) {
                     System.out.println("O ganhou a partida!!");
                     break;
