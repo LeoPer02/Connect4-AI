@@ -1,4 +1,6 @@
+import java.util.ArrayList;
 import java.util.Random;
+
 
 public class MinMax {
     int depth;
@@ -8,8 +10,34 @@ public class MinMax {
         this.depth = depth;
     }
 
-
-    public int min(int[] a){
+    public int max(int[] a){
+        int val = -999999;
+        int j = 0, i = 0;
+        int count = 0;
+        for(int move : a){
+            if(move > val){
+                val = move;
+                j = i;
+                count = 1;
+            }else if(move == val){
+                count++;
+            }
+            i++;
+        }
+        System.out.println();
+        int[] maxs = new int[count];
+        Random r = new Random();
+        int k = 0, f = 0;
+        for(int move: a){
+            if(move == val) {
+                maxs[k] = f;
+                k++;
+            }
+            f++;
+            }
+        return maxs[r.nextInt(count)];
+    }
+    /*public int min(int[] a){
         int val = 99999;
         int j = 0;
         int count = 0;
@@ -34,57 +62,64 @@ public class MinMax {
             }
         }
         return mins[r.nextInt(count)];
-    }
+    }*/
 
-    public int gerar(Game atual, int ordem){
-            boolean[] poss = atual.movimentosPossiveis();
-            int[] vals = new int[poss.length];
-            for (int i = 1; i < poss.length; i++) {
-                if (poss[i]) {
-                    vals[i] = MIN_VALUE(atual.sucessor('O', i), depth - 1);
-                } else {
-                    vals[i] = 99999999;
-                }
+    public int gerar(Game atual, char ordem) {
+        if(ordem == 'O') {
+            atual.turno = 'O';
+            ArrayList<Integer> poss = atual.movimentosPossiveis();
+            int[] vals = new int[7];
+
+            for (int i = 0; i < 7; i++) {
+                vals[i] = -9999999;
             }
-            return min(vals);
-
-    }
-
-    public int MAX_VALUE(Game atual, int depth){
-        if(depth == 0){
-            return atual.utilidade();
-        }else{
-            int v = -99999;
-            int k;
-            for(int i = 1; i < 8; i++){
-                boolean[] poss = atual.movimentosPossiveis();
-                if(poss[i]) {
-                    k = MIN_VALUE(atual.sucessor('O', i), depth-1) ;
-                    if(k > v){
-                        v = k;
-                        best = i;
-                    }
-                }
+            for (int move : poss) {
+                vals[move] = MIN_VALUE(atual.sucessor(move), depth - 1, -1);
             }
-            return v;
+            return max(vals);
         }
+        ArrayList<Integer> poss = atual.movimentosPossiveis();
+        int[] vals = new int[7];
+
+        for (int i = 0; i < 7; i++) {
+            vals[i] = -9999999;
+        }
+        for (int move : poss) {
+            vals[move] = MIN_VALUE(atual.sucessor(move), depth - 1, 1);
+        }
+        return max(vals);
     }
-    public int MIN_VALUE(Game atual, int depth){
+
+    public int MAX_VALUE(Game atual, int depth, int ordem){
         if(depth == 0){
-            return atual.utilidade();
-        }else{
-            int v = 999999;
-            int k;
-            for(int i = 1; i < 8; i++){
-                boolean[] poss = atual.movimentosPossiveis();
-                if(poss[i]) {
-                    k = MAX_VALUE(atual.sucessor('X', i), depth-1) ;
-                    if(k <= v){
-                        v = k;
-                    }
+            return (atual.utilidade() * ordem);
+        }
+        int v = -99999;
+        int k;
+        ArrayList<Integer> poss = atual.movimentosPossiveis();
+        for(int move : poss){
+                k = MIN_VALUE(atual.sucessor(move), depth-1, ordem) ;
+                if(k > v){
+                    v = k;
                 }
             }
-            return v;
+        return v;
+    }
+
+
+    public int MIN_VALUE(Game atual, int depth, int ordem) {
+        if (depth == 0) {
+            return atual.utilidade() * ordem;
         }
+        int v = 999999;
+        int k;
+        ArrayList<Integer> poss = atual.movimentosPossiveis();
+        for (int move : poss) {
+            k = MAX_VALUE(atual.sucessor(move), depth - 1, ordem);
+            if (k <= v) {
+                v = k;
+            }
+        }
+        return v;
     }
 }
