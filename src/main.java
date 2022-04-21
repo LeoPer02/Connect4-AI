@@ -18,15 +18,14 @@ public class main {
     }
 
     private static void runMonteCarlo() {
-        Game a = new Game();
+        Game game = new Game();
         Scanner in = new Scanner(System.in);
+        int move;
 
-        int jogadas = 0;
         System.out.println("Deseja jogar primeiro ou segundo? (1/2)");
-        int ordem = in.nextInt();
 
         char jogador, oponente;
-        if (ordem == 1) {
+        if (in.nextInt() == 1) {
             jogador = 'X';
             oponente = 'O';
         } else {
@@ -34,40 +33,53 @@ public class main {
             oponente = 'X';
         }
 
-
-        MCTS mcts_jogador = new MCTS(jogador, 1);
         MCTS mcts = new MCTS(oponente, 1);
-        int aux = 0;
-        a.printJogo();
-        if (jogador == 'X') {
-            int playerMov = in.nextInt();
-            a = a.sucessor(playerMov);
-            a.printJogo();
-            jogadas++;
+        MCTS mcts_jogador = new MCTS(jogador, .05);
+        int jogadas = 0, aux = 0;
+
+        if (jogador == 'X'){
+            System.out.println("You:\n");
+            game.printJogo();
+            System.out.print("Move: ");
+            move = in.nextInt();
+            game = game.sucessor(move);
+
             aux = 1;
         }
+
         while (jogadas < 42 - aux) {
-            a = mcts.findNextMove(a);
-            jogadas++;
-            System.out.println("\n------------------------------------------\nMCTS:\n");
-            a.printJogo();
-            System.out.println();
-            if (a.vitoria(oponente)) {
-                System.out.println(oponente + " ganhou a partida!!");
-                break;
+            if (jogadas % 2 == 0) {
+                System.out.println("MCTS:\n");
+                game.printJogo();
+                game = mcts.findNextMove(game);
+
+                if (game.vitoria(oponente)) {
+                    System.out.println("----------------------------------");
+                    game.printJogo();
+                    System.out.println(oponente + " ganhou!!");
+                    break;
+                }
+
+                System.out.println("----------------------------------");
+            } else {
+                System.out.println("You:\n");
+                game.printJogo();
+                System.out.print("Move: ");
+                move = in.nextInt();
+                game = game.sucessor(move);
+                //game = mcts_jogador.findNextMove(game);
+
+                if (game.vitoria(jogador)) {
+                    System.out.println("----------------------------------");
+                    game.printJogo();
+                    System.out.println(jogador + " ganhou!!");
+                    break;
+                }
+
+                System.out.println("----------------------------------");
             }
 
-            //int playerMov = in.nextInt();
-            //a = a.sucessor(playerMov);
-            a = mcts_jogador.findNextMove(a);
             jogadas++;
-            System.out.println("\n-------------------------\nYou:\n");
-            a.printJogo();
-            System.out.println();
-            if (a.vitoria(jogador)) {
-                System.out.println(jogador + " ganhou a partida!!");
-                break;
-            }
         }
 
     }

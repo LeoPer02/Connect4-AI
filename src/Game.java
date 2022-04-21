@@ -27,7 +27,7 @@ public class Game {
     }
 
     public char getProximoTurno() {
-        if (turno == 'X') return '0';
+        if (turno == 'X') return 'O';
         else return 'X';
     }
 
@@ -154,7 +154,7 @@ public class Game {
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 7; col++) {
                 if (checkVerticalWin(row, col, 'X')) return 512;
-                if (checkVerticalWin(row, col, '0')) return -512;
+                if (checkVerticalWin(row, col, 'O')) return -512;
             }
         }
 
@@ -162,7 +162,7 @@ public class Game {
         for (int row = 0; row < 6; row++) {
             for (int col = 0; col < 4; col++) {
                 if (checkHorizontalWin(row, col, 'X')) return 512;
-                if (checkHorizontalWin(row, col, '0')) return -512;
+                if (checkHorizontalWin(row, col, 'O')) return -512;
             }
         }
 
@@ -170,7 +170,7 @@ public class Game {
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 4; col++) {
                 if (checkDescendingWin(row, col, 'X')) return 512;
-                if (checkDescendingWin(row, col, '0')) return -512;
+                if (checkDescendingWin(row, col, 'O')) return -512;
             }
         }
 
@@ -178,7 +178,7 @@ public class Game {
         for (int row = 5; row > 2; row--) {
             for (int col = 0; col < 4; col++) {
                 if (checkAscendingWin(row, col, 'X')) return 512;
-                if (checkAscendingWin(row, col, '0')) return -512;
+                if (checkAscendingWin(row, col, 'O')) return -512;
             }
         }
 
@@ -224,11 +224,11 @@ public class Game {
         } else if (zCount == 1 && xCount == 0) {
             return -1;
         } else if (zCount == 0 && xCount == 1) {
-            return -1;
+            return 1;
         } else if (zCount == 0 && xCount == 2) {
-            return -10;
+            return 10;
         } else if (zCount == 0 && xCount == 3) {
-            return -50;
+            return 50;
         }
 
         return 0;
@@ -238,7 +238,7 @@ public class Game {
         int xCount = 0, zCount = 0;
         for (int row = rowStart; row < rowStart + 3; row++) {
             if (board[row][col] == 'X') xCount++;
-            if (board[row][col] == '0') zCount++;
+            if (board[row][col] == 'O') zCount++;
         }
         return valueByCounts(xCount, zCount);
     }
@@ -247,7 +247,7 @@ public class Game {
         int xCount = 0, zCount = 0;
         for (int col = colStart; col < colStart + 3; col++) {
             if (board[row][col] == 'X') xCount++;
-            if (board[row][col] == '0') zCount++;
+            if (board[row][col] == 'O') zCount++;
         }
         return valueByCounts(xCount, zCount);
     }
@@ -256,7 +256,7 @@ public class Game {
         int xCount = 0, zCount = 0;
         for (int i = 0; i < 3; i++) {
             if (board[rowStart - i][colStart + i] == 'X') xCount++;
-            if (board[rowStart - i][colStart + i] == '0') zCount++;
+            if (board[rowStart - i][colStart + i] == 'O') zCount++;
         }
         return valueByCounts(xCount, zCount);
     }
@@ -265,7 +265,7 @@ public class Game {
         int xCount = 0, zCount = 0;
         for (int i = 0; i < 3; i++) {
             if (board[rowStart + i][colStart + i] == 'X') xCount++;
-            if (board[rowStart + i][colStart + i] == '0') zCount++;
+            if (board[rowStart + i][colStart + i] == 'O') zCount++;
         }
         return valueByCounts(xCount, zCount);
     }
