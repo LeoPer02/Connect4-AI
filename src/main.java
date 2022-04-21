@@ -9,7 +9,7 @@ public class main {
         int alg = in.nextInt();
         switch (alg) {
             case 1:
-                //runMinMax();
+                runMinMax();
                 break;
             case 3:
                 runMonteCarlo();
@@ -78,16 +78,12 @@ public class main {
 
             }
 
-            System.out.println("Utilidade1: " + String.valueOf(game.utilidade()));
-            System.out.println("Utilidade2: " + String.valueOf(game.utilidade2()));
             System.out.println("----------------------------------");
 
             jogadas++;
         }
 
     }
-
-    /*
     private static void runMinMax() {
         Game a = new Game();
         Scanner in = new Scanner(System.in);
@@ -101,7 +97,7 @@ public class main {
         if (ordem == 2) {
             while (jogada < 42) {
                 //Computador primeiro
-                int movimento = jogo.gerar(a, 1);
+                int movimento = jogo.gerar(a, 'X');
                 System.out.println("Movimento: " + movimento);
                 a = a.sucessor(movimento);
                 jogada++;
@@ -134,18 +130,18 @@ public class main {
                 jogada++;
                 a.printJogo();
                 System.out.println();
-                if (a.vitoria('O')) {
-                    System.out.println("O ganhou a partida!!");
+                if (a.vitoria('X')) {
+                    System.out.println("X ganhou a partida!!");
                     break;
                 }
-                int movimento = jogo.gerar(a, 2);
+                int movimento = jogo.gerar(a, 'O');
                 System.out.println("Movimento: " + movimento);
                 a = a.sucessor(movimento);
                 jogada++;
                 a.printJogo();
                 System.out.println();
-                if (a.vitoria('X')) {
-                    System.out.println("X ganhou a partida!!");
+                if (a.vitoria('O')) {
+                    System.out.println("O ganhou a partida!!");
                     break;
                 }
             }
@@ -155,5 +151,4 @@ public class main {
             }
         }
     }
-    */
 }
