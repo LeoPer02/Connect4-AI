@@ -150,43 +150,14 @@ public class Game {
             return 0;
         }
 
-        // Vertical victory
-        for (int row = 0; row < 3; row++) {
-            for (int col = 0; col < 7; col++) {
-                if (checkVerticalWin(row, col, 'X')) return 512;
-                if (checkVerticalWin(row, col, 'O')) return -512;
-            }
-        }
-
-        // Horizontal victory
-        for (int row = 0; row < 6; row++) {
-            for (int col = 0; col < 4; col++) {
-                if (checkHorizontalWin(row, col, 'X')) return 512;
-                if (checkHorizontalWin(row, col, 'O')) return -512;
-            }
-        }
-
-        // Descending victory
-        for (int row = 0; row < 3; row++) {
-            for (int col = 0; col < 4; col++) {
-                if (checkDescendingWin(row, col, 'X')) return 512;
-                if (checkDescendingWin(row, col, 'O')) return -512;
-            }
-        }
-
-        // Ascending victory
-        for (int row = 5; row > 2; row--) {
-            for (int col = 0; col < 4; col++) {
-                if (checkAscendingWin(row, col, 'X')) return 512;
-                if (checkAscendingWin(row, col, 'O')) return -512;
-            }
-        }
+        if (vitoria('X')) return 512;
+        if (vitoria('O')) return -512;
 
         // Not a end game
         int sum = 0;
 
         // Vertical eval
-        for (int row = 0; row < 4; row++) {
+        for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 7; col++) {
                 sum += evaluateVertical(row, col);
             }
@@ -194,21 +165,21 @@ public class Game {
 
         // Horizontal eval
         for (int row = 0; row < 6; row++) {
-            for (int col = 0; col < 5; col++) {
+            for (int col = 0; col < 4; col++) {
                 sum += evaluateHorizontal(row, col);
             }
         }
 
         // Descending eval
-        for (int row = 0; row < 4; row++) {
-            for (int col = 0; col < 5; col++) {
+        for (int row = 0; row < 3; row++) {
+            for (int col = 0; col < 4; col++) {
                 sum += evaluateDescending(row, col);
             }
         }
 
         // Ascending eval
-        for (int row = 5; row > 1; row--) {
-            for (int col = 0; col < 5; col++) {
+        for (int row = 5; row > 2; row--) {
+            for (int col = 0; col < 4; col++) {
                 sum += evaluateAscending(row, col);
             }
         }
@@ -236,7 +207,7 @@ public class Game {
 
     private int evaluateVertical(int rowStart, int col) {
         int xCount = 0, zCount = 0;
-        for (int row = rowStart; row < rowStart + 3; row++) {
+        for (int row = rowStart; row < rowStart + 4; row++) {
             if (board[row][col] == 'X') xCount++;
             if (board[row][col] == 'O') zCount++;
         }
@@ -245,7 +216,7 @@ public class Game {
 
     private int evaluateHorizontal(int row, int colStart) {
         int xCount = 0, zCount = 0;
-        for (int col = colStart; col < colStart + 3; col++) {
+        for (int col = colStart; col < colStart + 4; col++) {
             if (board[row][col] == 'X') xCount++;
             if (board[row][col] == 'O') zCount++;
         }
@@ -254,7 +225,7 @@ public class Game {
 
     private int evaluateAscending(int rowStart, int colStart) {
         int xCount = 0, zCount = 0;
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 4; i++) {
             if (board[rowStart - i][colStart + i] == 'X') xCount++;
             if (board[rowStart - i][colStart + i] == 'O') zCount++;
         }
@@ -263,7 +234,7 @@ public class Game {
 
     private int evaluateDescending(int rowStart, int colStart) {
         int xCount = 0, zCount = 0;
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 4; i++) {
             if (board[rowStart + i][colStart + i] == 'X') xCount++;
             if (board[rowStart + i][colStart + i] == 'O') zCount++;
         }
@@ -306,8 +277,7 @@ public class Game {
         return true;
     }
 
-    /*
-    public int utilidade() {
+    public int utilidade2() {
         if (isBoardFull()) {
             return 0;
         }
@@ -574,7 +544,6 @@ public class Game {
         return utilidade;
     }
 
-     */
 
     public ArrayList<Game> getChildren() {
         ArrayList<Game> children = new ArrayList<>();

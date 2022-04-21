@@ -33,6 +33,7 @@ public class main {
             oponente = 'X';
         }
 
+        MCTS mcts_jogador = new MCTS(jogador, 1);
         MCTS mcts = new MCTS(oponente, 1);
         int jogadas = 0, aux = 0;
 
@@ -66,6 +67,7 @@ public class main {
                 System.out.print("Move: ");
                 move = in.nextInt();
                 game = game.sucessor(move);
+                //game = mcts_jogador.findNextMove(game);
 
                 if (game.vitoria(jogador)) {
                     System.out.println("----------------------------------");
@@ -74,8 +76,11 @@ public class main {
                     break;
                 }
 
-                System.out.println("----------------------------------");
             }
+
+            System.out.println("Utilidade1: " + String.valueOf(game.utilidade()));
+            System.out.println("Utilidade2: " + String.valueOf(game.utilidade2()));
+            System.out.println("----------------------------------");
 
             jogadas++;
         }
