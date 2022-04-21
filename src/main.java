@@ -52,7 +52,7 @@ public class main {
             System.out.println("\n------------------------------------------\nMCTS:\n");
             a.printJogo();
             System.out.println();
-            if (Math.abs(a.utilidade()) == 512) {
+            if (a.vitoria(oponente)) {
                 System.out.println(oponente + " ganhou a partida!!");
                 break;
             }
@@ -64,7 +64,7 @@ public class main {
             System.out.println("\n-------------------------\nYou:\n");
             a.printJogo();
             System.out.println();
-            if (Math.abs(a.utilidade()) == 512) {
+            if (a.vitoria(jogador)) {
                 System.out.println(jogador + " ganhou a partida!!");
                 break;
             }

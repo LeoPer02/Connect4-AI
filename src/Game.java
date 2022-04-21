@@ -89,77 +89,33 @@ public class Game {
     Y Z W S T - -
     Z W S T - - -
     */
-    public boolean vitoria(char jogador) {
-        String sequencia = "" + jogador + "" + jogador + "" + jogador + "" + jogador;
-
-        //verificar as linhas
-        for (int i = 0; i < 6; i++)
-            if (String.valueOf(this.board[i]).contains(sequencia))
-                return true;
-        //verificar as colunas
-        for (int j = 0; j < 7; j++) {
-            String col = "";
-            for (int i = 0; i < 6; i++)
-                col += this.board[i][j];
-
-            if (col.contains(sequencia))
-                return true;
-        }
-        //Diagonal Direita
-        int row = 3, col = 0;
-        while (row <= 5) {
-            String temp = "";
-            int row2 = row, col2 = col;
-            while (row2 >= 0 && col2 < 7) {
-                temp += board[row2][col2];
-                row2--;
-                col2++;
+    public boolean vitoria(char marker) {
+        // Vertical victory
+        for (int row = 0; row < 3; row++) {
+            for (int col = 0; col < 7; col++) {
+                if (checkVerticalWin(row, col, marker)) return true;
             }
-            if (temp.contains(sequencia)) return true;
-            row++;
-        }
-        //Cont. Diagonal Direita
-        row = 5;
-        col = 1;
-        while (col <= 3) {
-            String temp = "";
-            int row2 = row, col2 = col;
-            while (row2 >= 0 && col2 < 7) {
-                temp += board[row2][col2];
-                row2--;
-                col2++;
-            }
-            if (temp.contains(sequencia)) return true;
-            col++;
         }
 
-        //Diagonal Esquerda
-        row = 3;
-        col = 6;
-        while (row <= 5) {
-            String temp = "";
-            int row2 = row, col2 = col;
-            while (row2 >= 0 && col2 >= 0) {
-                temp += board[row2][col2];
-                row2--;
-                col2--;
+        // Horizontal victory
+        for (int row = 0; row < 6; row++) {
+            for (int col = 0; col < 4; col++) {
+                if (checkHorizontalWin(row, col, marker)) return true;
             }
-            if (temp.contains(sequencia)) return true;
-            row++;
         }
-        //Cont. Diagonal Esquerda
-        row = 5;
-        col = 5;
-        while (col >= 3) {
-            String temp = "";
-            int row2 = row, col2 = col;
-            while (row2 >= 0 && col2 >= 0) {
-                temp += board[row2][col2];
-                row2--;
-                col2--;
+
+        // Descending victory
+        for (int row = 0; row < 3; row++) {
+            for (int col = 0; col < 4; col++) {
+                if (checkDescendingWin(row, col, marker)) return true;
             }
-            if (temp.contains(sequencia)) return true;
-            col--;
+        }
+
+        // Ascending victory
+        for (int row = 5; row > 2; row--) {
+            for (int col = 0; col < 4; col++) {
+                if (checkAscendingWin(row, col, marker)) return true;
+            }
         }
 
         return false;
