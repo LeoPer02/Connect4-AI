@@ -34,7 +34,6 @@ public class main {
         }
 
         MCTS mcts = new MCTS(oponente, 1);
-        MCTS mcts_jogador = new MCTS(jogador, .05);
         int jogadas = 0, aux = 0;
 
         if (jogador == 'X'){
@@ -67,7 +66,6 @@ public class main {
                 System.out.print("Move: ");
                 move = in.nextInt();
                 game = game.sucessor(move);
-                //game = mcts_jogador.findNextMove(game);
 
                 if (game.vitoria(jogador)) {
                     System.out.println("----------------------------------");
